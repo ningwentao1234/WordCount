@@ -1,0 +1,24 @@
+package com.test.flow;
+
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Reducer;
+
+import java.io.IOException;
+
+public class FlowCountReducer extends Reducer<Text,FlowBean,Text,FlowBean> {
+    private FlowBean  flowBean = new FlowBean();
+    @Override
+    protected void reduce(Text key, Iterable<FlowBean> values, Context context) throws IOException, InterruptedException {
+        long sum_upFlow = 0;
+        long sum_downFlow = 0;
+        // 1 遍历所用bean，将其中的上行流量，下行流量分别累加
+        for (FlowBean flowBean : values) {
+            sum_upFlow += flowBean.getUpFlow();
+            sum_downFlow += flowBean.getDownFlow();
+        }
+        // 2 封装对象
+        flowBean.set(sum_upFlow, sum_downFlow);
+        // 3 写出(输出这个对象相当于调用这个对象的toString方法)
+        context.write(key, flowBean);
+    }
+}
