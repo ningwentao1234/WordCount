@@ -16,7 +16,7 @@ public class WordcountDriver {
         // 1 获取配置信息以及封装任务
         Configuration configuration = new Configuration();
         Job job = Job.getInstance(configuration);
-        // 2 设置jar加载路径
+        // 2 设置jar包加载路径
         job.setJarByClass(WordcountDriver.class);
         // 3 设置map和reduce类
         job.setMapperClass(WordcountMapper.class);
